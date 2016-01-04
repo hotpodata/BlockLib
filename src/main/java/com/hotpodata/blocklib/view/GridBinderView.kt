@@ -5,7 +5,6 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import com.hotpodata.blocklib.Grid
-import java.util.*
 
 /**
  * Created by jdrotos on 12/20/15.
@@ -143,5 +142,16 @@ class GridBinderView : View {
         return RectF()
     }
 
+    public fun getGridCoords(x: Float, y: Float): Pair<Int, Int> {
+        var g = grid
+        if (g != null) {
+            var boxWidth = (width - 2 * gridPaint.strokeWidth) / g.width
+            var boxHeight = (height - 2 * gridPaint.strokeWidth) / g.height
 
+            var xOffset = (x - gridPaint.strokeWidth) / boxWidth
+            var yOffset = (y - gridPaint.strokeWidth) / boxHeight
+            return Pair(xOffset.toInt(), yOffset.toInt())
+        }
+        return Pair(-1, -1)
+    }
 }
