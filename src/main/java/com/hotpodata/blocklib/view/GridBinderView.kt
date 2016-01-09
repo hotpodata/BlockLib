@@ -1,7 +1,10 @@
 package com.hotpodata.blocklib.view
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import com.hotpodata.blocklib.Grid
@@ -12,12 +15,19 @@ import com.hotpodata.blocklib.Grid
 class GridBinderView : View {
 
     public interface IBlockDrawer {
-        fun drawBlock(canvas: Canvas, data: Any)
+        //fun drawBlock(canvas: Canvas, data: Any)
+        fun drawBlock(canvas: Canvas, blockCoords: RectF, data: Any)
     }
 
     public open class RedBlockDrawer() : IBlockDrawer {
-        override fun drawBlock(canvas: Canvas, data: Any) {
-            canvas.drawColor(Color.RED)
+        var paint = Paint()
+
+        init {
+            paint.color = Color.RED
+        }
+
+        override fun drawBlock(canvas: Canvas, blockCoords: RectF, data: Any) {
+            canvas.drawRect(blockCoords, paint)
         }
     }
 
@@ -104,9 +114,10 @@ class GridBinderView : View {
                     var data = g.at(i, j)
                     if (data != null) {
                         //Clip the canvas
-                        canvas.clipRect(gridPaint.strokeWidth + i * boxWidth.toFloat(), gridPaint.strokeWidth + j * boxHeight.toFloat(), gridPaint.strokeWidth + (i + 1) * boxWidth.toFloat(), gridPaint.strokeWidth + (j + 1) * boxHeight.toFloat(), Region.Op.REPLACE);
+                        //canvas.clipRect(gridPaint.strokeWidth + i * boxWidth.toFloat(), gridPaint.strokeWidth + j * boxHeight.toFloat(), gridPaint.strokeWidth + (i + 1) * boxWidth.toFloat(), gridPaint.strokeWidth + (j + 1) * boxHeight.toFloat(), Region.Op.REPLACE);
+                        var rect = RectF(gridPaint.strokeWidth + i * boxWidth.toFloat(), gridPaint.strokeWidth + j * boxHeight.toFloat(), gridPaint.strokeWidth + (i + 1) * boxWidth.toFloat(), gridPaint.strokeWidth + (j + 1) * boxHeight.toFloat());
                         //And then draw
-                        drawer.drawBlock(canvas, data)
+                        drawer.drawBlock(canvas, rect, data)
                     }
                 }
             }
