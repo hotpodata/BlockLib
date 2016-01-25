@@ -60,6 +60,20 @@ object GridHelper {
         }
     }
 
+    fun subtractGrid(target: Grid, obj: Grid, xOffset: Int, yOffset: Int) {
+        for (i in obj.slots.indices) {
+            for (j in obj.slots[i].indices) {
+                if (obj.at(i, j) != null) {
+                    val x = i + xOffset;
+                    val y = j + yOffset;
+                    if (target.saneCoords(x, y)) {
+                        target.put(x, y, null)
+                    }
+                }
+            }
+        }
+    }
+
     fun copyGrid(obj: Grid): Grid {
         var grid = Grid(obj.width, obj.height)
         addGrid(grid, obj, 0, 0)
