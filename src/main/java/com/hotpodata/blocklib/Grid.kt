@@ -133,15 +133,18 @@ class Grid(val width: Int, val height: Int) {
         return ret
     }
 
-    fun getPrintString(blank: String, full:String) : String{
+    fun getPrintString(blank: String, full: String): String {
+        return getPrintString(blank, { x -> full })
+    }
+
+    fun getPrintString(blank: String, dataToStrFunc: (Any) -> String): String {
         var builder = StringBuilder()
-        for(i in 0..height-1){
-            for(j in 0..width-1){
-                builder.append( if(slots[j][i] == null) blank else full)
+        for (i in 0..height - 1) {
+            for (j in 0..width - 1) {
+                builder.append(if (slots[j][i] == null) blank else dataToStrFunc(slots[j][i]!!))
             }
             builder.append("\n")
         }
         return builder.toString()
     }
-
 }
